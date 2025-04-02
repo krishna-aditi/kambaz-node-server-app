@@ -7,8 +7,12 @@ import CourseRoutes from "./Kambaz/Courses/routes.js";
 import EnrollmentsRoutes from "./Kambaz/Enrollments/routes.js";
 import ModuleRoutes from "./Kambaz/Modules/routes.js";
 import AssignmentsRoutes from "./Kambaz/Assignments/routes.js";
+import QuizRoutes from "./Kambaz/Quizzes/routes.js";
+import QuizSubmissionRoutes from "./Kambaz/Quizzes/QuizSubmissions/routes.js";
+import QuestionRoutes from "./Kambaz/Quizzes/QuizQuestions/routes.js";
 import session from "express-session";
 import "dotenv/config";
+
 
 const app = express() // create new express instance
 
@@ -44,7 +48,10 @@ CourseRoutes(app);
 EnrollmentsRoutes(app);
 ModuleRoutes(app);
 AssignmentsRoutes(app);
+QuizRoutes(app);
+QuizSubmissionRoutes(app);
+QuestionRoutes(app);
 Hello(app);
 Lab5(app);
 
-app.listen(process.env.PORT || 4000) // listen to http://localhost:4000
+app.listen(process.env.PORT || 4000)
