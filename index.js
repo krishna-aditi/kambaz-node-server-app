@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose"; // load mongoose library
 import cors from "cors";
 import Hello from "./Hello.js"; // .js extension is very important!
 import Lab5 from "./Lab5/index.js";
@@ -8,11 +7,13 @@ import CourseRoutes from "./Kambaz/Courses/routes.js";
 import EnrollmentsRoutes from "./Kambaz/Enrollments/routes.js";
 import ModuleRoutes from "./Kambaz/Modules/routes.js";
 import AssignmentsRoutes from "./Kambaz/Assignments/routes.js";
+import QuizRoutes from "./Kambaz/Quizzes/routes.js";
+import QuizSubmissionRoutes from "./Kambaz/Quizzes/QuizSubmissions/routes.js";
+import QuestionRoutes from "./Kambaz/Quizzes/QuizQuestions/routes.js";
 import session from "express-session";
 import "dotenv/config";
 
-const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kambaz"
-mongoose.connect(CONNECTION_STRING); // connect to the kambaz database
+
 const app = express() // create new express instance
 
 app.use(cors({
@@ -47,7 +48,10 @@ CourseRoutes(app);
 EnrollmentsRoutes(app);
 ModuleRoutes(app);
 AssignmentsRoutes(app);
+QuizRoutes(app);
+QuizSubmissionRoutes(app);
+QuestionRoutes(app);
 Hello(app);
 Lab5(app);
 
-app.listen(process.env.PORT || 4000) // listen to http://localhost:4000
+app.listen(process.env.PORT || 4000)
