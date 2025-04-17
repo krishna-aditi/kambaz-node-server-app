@@ -28,8 +28,17 @@ export const updateQuiz = (quizId, quizUpdates) => {
 };
 
 // Delete a quiz by its ID
+// export const deleteQuiz = (quizId) => {
+//     Quizzes = Quizzes.filter((quiz) => quiz._id !== quizId);
+// };
+
 export const deleteQuiz = (quizId) => {
-    Quizzes = Quizzes.filter((quiz) => quiz._id !== quizId);
+    const index = Quizzes.findIndex((quiz) => quiz._id === quizId);
+    if (index !== -1) {
+        Quizzes.splice(index, 1);
+        return { success: true };
+    }
+    return { success: false };
 };
 
 // Toggle the published status for a quiz by its ID and return the updated quiz

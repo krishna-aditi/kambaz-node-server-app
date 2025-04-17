@@ -1,5 +1,6 @@
 import QuizQuestions from "../../Database/quizquestions.js";
 import Quizzes from "../../Database/quizzes.js";
+import { v4 as uuidv4 } from "uuid";
 
 // Create a new question and update the quiz's question count
 export const createQuestion = (question) => {
@@ -49,9 +50,10 @@ export const deleteQuestion = (questionId) => {
     if (!question) return;
 
     // Remove the question from the array
-    QuizQuestions = QuizQuestions.filter(
-        (q) => q._id !== questionId
-    );
+    const index = QuizQuestions.findIndex((q) => q._id === questionId);
+    if (index !== -1) {
+        QuizQuestions.splice(index, 1);
+    }
 
     // Decrement the numberOfQuestions for the corresponding quiz
     const quiz = Quizzes.find((q) => q._id === question.quizId);
