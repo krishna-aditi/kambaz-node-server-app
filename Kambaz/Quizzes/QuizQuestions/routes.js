@@ -25,6 +25,36 @@ export default function QuestionRoutes(app) {
     });
 
     // Create new question
+    // app.post("/api/quizzes/:quizId/questions", async (req, res) => {
+    //     const { quizId } = req.params;
+    //     try {
+    //         // Get the quiz to verify it exists and get courseId
+    //         const quiz = await quizDao.findQuizById(quizId);
+    //         if (!quiz) {
+    //             return res.status(404).json({ error: "Quiz not found" });
+    //         }
+
+    //         // Get current questions count for ordering
+    //         const currentQuestions = await dao.findQuestionsForQuiz(quizId);
+
+    //         const question = {
+    //             ...req.body,
+    //             quizId,
+    //             courseId: quiz.course,
+    //             order: currentQuestions.length
+    //         };
+
+    //         const newQuestion = await dao.createQuestion(question);
+
+    //         // Update total points in quiz
+    //         const totalPoints = await dao.calculateQuizPoints(quizId);
+    //         await quizDao.updateQuiz(quizId, { numberOfQuestions: currentQuestions.length + 1, points: totalPoints });
+
+    //         res.json(newQuestion);
+    //     } catch (error) {
+    //         res.status(500).json({ error: "Error creating question" });
+    //     }
+    // });
     app.post("/api/quizzes/:quizId/questions", async (req, res) => {
         const { quizId } = req.params;
         try {
@@ -44,11 +74,12 @@ export default function QuestionRoutes(app) {
                 order: currentQuestions.length
             };
 
+            // This now handles updating numberOfQuestions internally
             const newQuestion = await dao.createQuestion(question);
 
-            // Update total points in quiz
+            // Just update points, numberOfQuestions is already updated in dao
             const totalPoints = await dao.calculateQuizPoints(quizId);
-            await quizDao.updateQuiz(quizId, { numberOfQuestions: currentQuestions.length + 1, points: totalPoints });
+            await quizDao.updateQuiz(quizId, { points: totalPoints });
 
             res.json(newQuestion);
         } catch (error) {
@@ -78,6 +109,29 @@ export default function QuestionRoutes(app) {
     });
 
     // Delete question
+    // app.delete("/api/questions/:questionId", async (req, res) => {
+    //     const { questionId } = req.params;
+    //     try {
+    //         const question = await dao.findQuestionById(questionId);
+    //         if (!question) {
+    //             return res.status(404).json({ error: "Question not found" });
+    //         }
+
+    //         const status = await dao.deleteQuestion(questionId);
+
+    //         // Update quiz question count and points
+    //         const currentQuestions = await dao.findQuestionsForQuiz(question.quizId);
+    //         const totalPoints = await dao.calculateQuizPoints(question.quizId);
+    //         await quizDao.updateQuiz(question.quizId, {
+    //             numberOfQuestions: currentQuestions.length,
+    //             points: totalPoints
+    //         });
+
+    //         res.json(status);
+    //     } catch (error) {
+    //         res.status(500).json({ error: "Error deleting question" });
+    //     }
+    // });
     app.delete("/api/questions/:questionId", async (req, res) => {
         const { questionId } = req.params;
         try {
@@ -86,15 +140,12 @@ export default function QuestionRoutes(app) {
                 return res.status(404).json({ error: "Question not found" });
             }
 
+            // This now handles decrementing numberOfQuestions internally
             const status = await dao.deleteQuestion(questionId);
 
-            // Update quiz question count and points
-            const currentQuestions = await dao.findQuestionsForQuiz(question.quizId);
+            // Just update points, numberOfQuestions is already updated in dao
             const totalPoints = await dao.calculateQuizPoints(question.quizId);
-            await quizDao.updateQuiz(question.quizId, {
-                numberOfQuestions: currentQuestions.length,
-                points: totalPoints
-            });
+            await quizDao.updateQuiz(question.quizId, { points: totalPoints });
 
             res.json(status);
         } catch (error) {

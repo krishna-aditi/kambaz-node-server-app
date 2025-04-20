@@ -68,7 +68,6 @@ export default [
         "webcamRequired": false,
         "published": true
     },
-
     {
         "_id": "Q201",
         "title": "Aerodynamics Quiz",
@@ -137,7 +136,6 @@ export default [
         "webcamRequired": false,
         "published": true
     },
-
     {
         "_id": "Q301",
         "title": "Structural Design Task Quiz",
